@@ -9,7 +9,7 @@
 - Express JS
 - MongoDB & MongoDB Compass (client)
 - Postman
-- Linuz (Zorin OS)
+- Linux (Zorin OS)
 
 ### Manual Authentication Endpoints
 
