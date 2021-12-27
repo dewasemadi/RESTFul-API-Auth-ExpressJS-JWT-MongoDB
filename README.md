@@ -2,7 +2,7 @@
 
 ![Screenshot from 2021-12-27 22-16-07](https://user-images.githubusercontent.com/66185022/147479929-150f9e31-8bac-4ff5-9794-2315de864bff.png)
 
-> After clone this project, create your own .env file for environment variables
+> After clone this project, create your own .env file for environment variables in root project
 
 ### Tech Stack and Tools
 
