@@ -69,7 +69,7 @@ GOOGLE_CLIENT_SECRET = <your client secret>
 
 ![Rest API Architecture](https://user-images.githubusercontent.com/66185022/147479146-28d3af7f-180c-4f98-9bb9-807f0159a289.jpg)
 
-#### Access Token and Refresh Token Flow
+#### Access Token and Refresh Token JWT Flow
 
 ![access token and refresh token flow-Page-1](https://user-images.githubusercontent.com/66185022/147512980-2b69e160-d1cb-47c0-b6cb-864bf623cf24.jpg)
 
