@@ -1,4 +1,4 @@
-## Authentication ExpressJS Using JWT
+## Authentication & Authorization ExpressJS Using JWT
 
 ![Screenshot from 2021-12-27 22-16-07](https://user-images.githubusercontent.com/66185022/147479929-150f9e31-8bac-4ff5-9794-2315de864bff.png)
 
