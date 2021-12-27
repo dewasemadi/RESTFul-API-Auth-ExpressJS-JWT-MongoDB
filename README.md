@@ -71,7 +71,7 @@ GOOGLE_CLIENT_SECRET = <your client secret>
 
 #### Access Token and Refresh Token Flow
 
-![OxQRQ](https://user-images.githubusercontent.com/66185022/147479296-b722db1b-8789-4486-b8aa-4798a1db3edd.png)
+![access token and refresh token flow-Page-1](https://user-images.githubusercontent.com/66185022/147512980-2b69e160-d1cb-47c0-b6cb-864bf623cf24.jpg)
 
 #### Login or Sign Up with Google
 
