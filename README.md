@@ -4,6 +4,24 @@
 
 > After clone this project, create your own .env file for environment variables in root project
 
+```bash
+NODE_ENV = <your node env>
+
+CLIENT_BASE_URL = <your client base url>
+SERVER_BASE_URL = <your server base url>
+MONGO_URI = <your mongo uri>
+
+ACCESS_TOKEN_SECRET = <your access token secret>
+REFRESH_TOKEN_SECRET = <your refresh token secret>
+
+EMAIL_SENDER = <your email sender name>
+AUTH_EMAIL = <your email>
+AUTH_EMAIL_PASSWORD = <your email password>
+
+GOOGLE_CLIENT_ID = <your client id>
+GOOGLE_CLIENT_SECRET = <your client secret>
+```
+
 ### Tech Stack and Tools
 
 - Express JS
