@@ -50,19 +50,19 @@ const getGoogleUser = async (access_token, id_token) => {
 
 const generateAuthorizationUrl = (req, res) => {
   try {
-    // GET @route /auth/google/callback?code={authorizationCode}
     res.status(200).json(getStandardResponse(true, 'Successfully generate google authentication URL', { url: url }));
   } catch (error) {
     res.status(401).json(getStandardResponse(false, error.message));
   }
 };
 
-// Retrieve authorization code
+// Retrieve authorization code from google services to our server (express)
+// GET /auth/google/callback?code={authorizationCode}
 const getAccessToken = async (req, res) => {
-  // This will provide an object with the access_token and refresh_token.
-  // Save these somewhere safe so they can be used at a later time.
-  const code = req.query.code;
+  const code = req.query.code; // <code> for getting tokens coming from google services
+
   try {
+    // tokens will provide an object with the access_token and refresh_token.
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
     const { sub, name, email, email_verified } = await getGoogleUser(tokens.access_token, tokens.id_token);
