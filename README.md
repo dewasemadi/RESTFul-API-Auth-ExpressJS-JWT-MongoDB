@@ -1,6 +1,8 @@
 ## Authentication & Authorization ExpressJS Using JWT
 
-https://user-images.githubusercontent.com/66185022/147525197-7abb45c9-1cb1-41e8-bb51-9580ed0aff54.mp4
+> Left side is client app using next js and right side is log of express js
+
+https://user-images.githubusercontent.com/66185022/147525320-367331b6-5849-465c-abd5-34e4f5e01ff6.mp4
 
 > After clone this project, create your own .env file for environment variables in root project
 
