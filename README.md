@@ -1,6 +1,6 @@
 ## Authentication & Authorization ExpressJS Using JWT
 
-![Screenshot from 2021-12-27 22-16-07](https://user-images.githubusercontent.com/66185022/147479929-150f9e31-8bac-4ff5-9794-2315de864bff.png)
+https://user-images.githubusercontent.com/66185022/147525197-7abb45c9-1cb1-41e8-bb51-9580ed0aff54.mp4
 
 > After clone this project, create your own .env file for environment variables in root project
 
@@ -78,6 +78,8 @@ GOOGLE_CLIENT_SECRET = <your client secret>
 ![google oauth](https://user-images.githubusercontent.com/66185022/147479433-db925d5c-1830-42bd-9b9e-ae72dbde037c.png)
 
 #### Showcase Project
+
+![Screenshot from 2021-12-27 22-16-07](https://user-images.githubusercontent.com/66185022/147479929-150f9e31-8bac-4ff5-9794-2315de864bff.png)
 
 ![Screenshot from 2021-12-27 22-16-52](https://user-images.githubusercontent.com/66185022/147479990-09cb5a1c-0b20-4055-b956-ce97762fdaa6.png)
 

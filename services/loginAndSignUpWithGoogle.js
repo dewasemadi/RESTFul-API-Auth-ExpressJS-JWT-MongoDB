@@ -59,7 +59,7 @@ const generateAuthorizationUrl = (req, res) => {
 // Retrieve authorization code from google services to our server (express)
 // GET /auth/google/callback?code={authorizationCode}
 const getAccessToken = async (req, res) => {
-  const code = req.query.code; // <code> for getting tokens coming from google services
+  const code = req.query.code; // <code> for getting tokens coming from googleapis services
 
   try {
     // tokens will provide an object with the access_token and refresh_token.
@@ -67,7 +67,7 @@ const getAccessToken = async (req, res) => {
     oauth2Client.setCredentials(tokens);
     const { sub, name, email, email_verified } = await getGoogleUser(tokens.access_token, tokens.id_token);
 
-    // cek the user in database
+    // cek user in database
     const user = await User.findOne({ email: email });
     const newId = mongoose.Types.ObjectId(`000${sub}`);
 
@@ -78,6 +78,7 @@ const getAccessToken = async (req, res) => {
       isEmailVerified: user ? user.isEmailVerified : email_verified,
     };
 
+    // save user if not already in database
     if (!user) await new User(userObject).save();
 
     const accessToken = jwt.sign({ _id: user ? user._id : newId }, ACCESS_TOKEN_SECRET, { expiresIn: '30m' }); // 30 minutes
@@ -100,10 +101,10 @@ const getAccessToken = async (req, res) => {
 const getGoogleUserFromDB = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user });
-    if (!user) return res.status(401).json(getStandardResponse(false, 'Email not found'));
+    if (!user) return res.status(404).json(getStandardResponse(false, 'Email not found'));
     res.status(200).json(getStandardResponse(false, 'Get google user successfully', user));
   } catch (error) {
-    res.status(401).json(getStandardResponse(false, error.message));
+    res.status(404).json(getStandardResponse(false, error.message));
   }
 };
 

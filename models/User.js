@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
+/*
+ *
+ *why using joi?
+ *because costume validation on mongoose only work on save/create method
+ *
+ */
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

@@ -31,7 +31,7 @@ const register = async (req, res) => {
     // create a new token to verify email address
     const token = await new Token({
       user_id: user._id,
-      token: nanoid(32),
+      token: nanoid(64),
     }).save();
 
     // Send email verification
@@ -47,14 +47,14 @@ const login = async (req, res) => {
 
   // data validation
   const { error } = loginValidation.validate(req.body);
-  if (error) return res.status(401).json(getStandardResponse(false, error.details[0].message));
+  if (error) return res.status(403).json(getStandardResponse(false, error.details[0].message));
 
   // check the email
   const user = await User.findOne({ email: email });
   if (!user) return res.status(404).json(getStandardResponse(false, 'Email not found'));
 
   // check the email must be verified
-  const userEmailVerified = await User.findOne({ email: email, isEmailVerified: true });
+  const userEmailVerified = await User.findOne({ isEmailVerified: true });
   if (!userEmailVerified)
     return res.status(401).json(getStandardResponse(false, 'Check your email to verify your account before login'));
 
@@ -107,11 +107,11 @@ const changePassword = async (req, res) => {
 
   const user = await User.findOne({ _id: req.user });
   const isOldPassSameWithDbPass = await bcrypt.compare(old_password, user.password);
-  if (!isOldPassSameWithDbPass) return res.status(401).json(getStandardResponse(false, 'Old password is wrong'));
+  if (!isOldPassSameWithDbPass) return res.status(403).json(getStandardResponse(false, 'Old password is wrong'));
 
   // check if old password is same with new password
   if (old_password === new_password)
-    return res.status(401).json(getStandardResponse(false, 'Your new password must be different with old password'));
+    return res.status(403).json(getStandardResponse(false, 'Your new password must be different with old password'));
 
   try {
     await user.updateOne({ password: await hashedPassword(new_password) });
@@ -130,17 +130,17 @@ const requestResetPasswordLink = async (req, res) => {
   if (!user) return res.status(404).json(getStandardResponse(false, 'Email not found'));
 
   try {
-    // create a new token to verify email address
+    // create a new token to request reset password link
     const token = await new Token({
       user_id: user._id,
-      token: nanoid(32),
+      token: nanoid(64),
       flag: 'RESET_PASSWORD',
     }).save();
 
     sendEmail(email, token.token, 'RESET_PASSWORD');
     res.status(200).json(getStandardResponse(true, `Reset password link has been sent to ${emailMask(email)}`));
   } catch (error) {
-    res.status(404).json(getStandardResponse(false, error.message));
+    res.status(400).json(getStandardResponse(false, error.message));
   }
 };
 
@@ -161,12 +161,11 @@ const resetPassword = async (req, res) => {
     return res.status(404).json(getStandardResponse(false, 'Your token has probably expired. Please try again'));
 
   try {
-    const user = await User.findOne({ _id: isValidToken.user_id });
-    await user.updateOne({ password: await hashedPassword(new_password) });
-    res.status(200).json(getStandardResponse(true, 'Password changed successfully', { _id: user._id }));
-
-    // delete token
-    await Token.deleteOne({ token: requestToken });
+    await User.findOne({ _id: isValidToken.user_id }).updateOne({
+      password: await hashedPassword(new_password),
+    });
+    await Token.deleteOne({ token: requestToken }); // delete token
+    res.status(200).json(getStandardResponse(true, 'Password changed successfully'));
   } catch (error) {
     res.status(400).json(getStandardResponse(false, error.message));
   }
@@ -188,7 +187,7 @@ const requestEmailVerification = async (req, res) => {
     // create a new token to verify email address
     const token = await new Token({
       user_id: isEmailExist._id,
-      token: nanoid(32),
+      token: nanoid(64),
     }).save();
 
     sendEmail(email, token.token, 'EMAIL_VERIFICATION');
@@ -207,13 +206,9 @@ const emailVerification = async (req, res) => {
     return res.status(404).json(getStandardResponse(false, 'Your token has probably expired. Please try again'));
 
   try {
-    const user = await User.findOne({ _id: isValidToken.user_id });
-    user.isEmailVerified = true;
-    await user.save();
-    res.status(201).json(getStandardResponse(true, 'Your email has been successfully verified'));
-
-    // delete token
-    await Token.deleteOne({ token: requestToken });
+    await User.findOne({ _id: isValidToken.user_id }).updateOne({ isEmailVerified: true });
+    await Token.deleteOne({ token: requestToken }); // delete token
+    res.status(200).json(getStandardResponse(true, 'Your email has been successfully verified'));
   } catch (error) {
     res.status(400).json(getStandardResponse(false, error.message));
   }
@@ -235,14 +230,14 @@ const generateAccessTokenFromRefreshToken = async (req, res) => {
   try {
     // extract payload from refresh token and generate a new access token
     const payload = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
-    const accessToken = jwt.sign({ _id: payload }, ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+    const accessToken = jwt.sign({ _id: payload._id }, ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
 
     // store jwt token into client cookies
-    res.clearCookie('access_token');
+    res.clearCookie('access_token'); // clear old cookie
     res.cookie('access_token', accessToken, { httpOnly: true });
     res.status(200).json(getStandardResponse(true, 'Access token successfully updated', { accessToken: accessToken }));
   } catch (error) {
-    res.status(403).json(getStandardResponse(false, error.message));
+    res.status(400).json(getStandardResponse(false, error.message));
   }
 };
 
