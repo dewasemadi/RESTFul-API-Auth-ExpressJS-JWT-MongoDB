@@ -49,9 +49,10 @@ const login = async (req, res) => {
   const { error } = loginValidation.validate(req.body);
   if (error) return res.status(403).json(getStandardResponse(false, error.details[0].message));
 
-  // check the email
+  // check the email and pass
   const user = await User.findOne({ email: email });
   if (!user) return res.status(404).json(getStandardResponse(false, 'Email not found'));
+  if (!user.password) return res.status(401).json(getStandardResponse(false, 'Wrong password'));
 
   // check the email must be verified
   const userEmailVerified = await User.findOne({ isEmailVerified: true });

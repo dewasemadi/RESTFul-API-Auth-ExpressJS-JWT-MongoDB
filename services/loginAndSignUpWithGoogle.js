@@ -12,6 +12,7 @@ const { getStandardResponse } = require('../helpers/getStandardResponse');
 const { User } = require('../models/User');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { customAlphabet } = require('nanoid');
 
 const oauth2Client = new google.auth.OAuth2(
   GOOGLE_CLIENT_ID,
@@ -69,7 +70,8 @@ const getAccessToken = async (req, res) => {
 
     // cek user in database
     const user = await User.findOne({ email: email });
-    const newId = mongoose.Types.ObjectId(`000${sub}`);
+    const nanoid = customAlphabet('0123456789', 3);
+    const newId = mongoose.Types.ObjectId(`${nanoid()}${sub}`);
 
     const userObject = {
       _id: user ? user._id : newId,
