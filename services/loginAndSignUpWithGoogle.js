@@ -86,10 +86,6 @@ const getAccessToken = async (req, res) => {
     const accessToken = jwt.sign({ _id: user ? user._id : newId }, ACCESS_TOKEN_SECRET, { expiresIn: '30m' }); // 30 minutes
     const refreshToken = jwt.sign({ _id: user ? user._id : newId }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' }); // 30 days
 
-    // add token to the response json
-    userObject.accessToken = accessToken;
-    userObject.refreshToken = refreshToken;
-
     // store jwt token into client cookies
     res.cookie('access_token', accessToken, { maxAge: 1800000, httpOnly: true }); // 30 minutes * 60 seconds * 1000 miliseconds
     res.cookie('refresh_token', refreshToken);
