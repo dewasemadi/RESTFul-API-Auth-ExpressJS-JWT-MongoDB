@@ -28,8 +28,8 @@ const userSchema = new mongoose.Schema({
   },
 }).set('timestamps', true);
 
-// at least one uppercase letter, one lowercase letter and one number
-const passwordPattern = `^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]`;
+// at least one uppercase letter, one lowercase letter, and one number
+const passwordPattern = `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])`;
 
 const registerValidation = Joi.object().keys({
   name: Joi.string().required(),

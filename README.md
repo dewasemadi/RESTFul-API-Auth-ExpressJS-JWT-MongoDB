@@ -86,3 +86,5 @@ GOOGLE_CLIENT_SECRET = <your client secret>
 ![Screenshot from 2021-12-27 22-16-52](https://user-images.githubusercontent.com/66185022/147479990-09cb5a1c-0b20-4055-b956-ce97762fdaa6.png)
 
 ![Screenshot from 2021-12-27 22-20-11](https://user-images.githubusercontent.com/66185022/147480274-9a5a6974-37df-4293-b009-ce25d5ebd087.png)
+
+![Screenshot from 2021-12-31 19-20-11](https://user-images.githubusercontent.com/66185022/147820682-a81b4b23-a9bc-44d6-9ecb-1b538d825557.png)
