@@ -5,14 +5,11 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const { CLIENT_BASE_URL } = process.env;
+const { getStandardResponse } = require('./helpers/getStandardResponse');
 
 // db_connection
 const DB_Connection = require('./db/db_config');
 DB_Connection();
-
-// routes
-const indexRouter = require('./routes/index');
-const authRouter = require('./routes/auth');
 
 // app configuration
 const app = express();
@@ -20,7 +17,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
 // cors settings: in front end set axios <withCredentials: true>
 app.use(
@@ -30,8 +27,12 @@ app.use(
   })
 );
 
-// endpoints
-app.use('/', indexRouter);
-app.use('/auth', authRouter);
+// routes
+const routes = require('./routes');
+app.use(routes);
+app.use((req, res, next) => {
+  res.status(404).json(getStandardResponse(false, 'Invalid Request'));
+  next();
+});
 
 module.exports = app;
