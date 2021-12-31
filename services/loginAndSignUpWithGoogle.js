@@ -60,7 +60,7 @@ const generateAuthorizationUrl = (req, res) => {
 // Retrieve authorization code from google services to our server (express)
 // GET /auth/google/callback?code={authorizationCode}
 const getAccessToken = async (req, res) => {
-  const code = req.query.code; // <code> for getting tokens coming from googleapis services
+  const code = req.query.code || ''; // <code> for getting tokens coming from googleapis services
 
   try {
     // tokens will provide an object with the access_token and refresh_token.
@@ -91,8 +91,7 @@ const getAccessToken = async (req, res) => {
     res.cookie('refresh_token', refreshToken);
     res.redirect(`${CLIENT_BASE_URL}/private`);
   } catch (error) {
-    console.log('Failed to fetch google account detail');
-    throw new Error(error.message);
+    res.status(401).json(getStandardResponse(false, 'Failed to fetch google account detail'));
   }
 };
 
